@@ -65,11 +65,14 @@ class Menu:
             if game.turn == BLACK:
                 value, new_board = minimax(game.get_board(), self.ai_difficulty, BLACK, game)
                 game.ai_move(new_board)
-                time.sleep(1)
 
             if game.winner() != None:
                 self.print_winner(game.winner())
             
+            if game.draw():
+                print("draw")
+                run = False
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False

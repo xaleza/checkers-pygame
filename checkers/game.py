@@ -1,6 +1,6 @@
 import pygame
 from checkers.board import Board
-from .constants import BLACK, WHITE, BLUE, SQUARE_SIZE
+from .constants import BLACK, WHITE, BLUE, SQUARE_SIZE, ROWS, COLS
 
 class Game:
     def __init__(self, win):
@@ -67,9 +67,29 @@ class Game:
     def winner(self):
         return self.board.winner()
 
+    def draw(self):
+        for row in self.board.board:
+            for piece in row:
+                if piece != 0 and piece.color == self.turn and len(self.board.get_valid_moves(piece)) > 0:
+                    return self.draw 
+        self.draw = True
+        return self.draw 
+
     def get_board(self):
         return self.board
+    
+    def highlight_move(self, new_board):
+        old_board = self.board
+        for row in range(ROWS):
+            for col in range(COLS):
+                if old_board.board[row][col] == 0 and new_board.board[row][col] != 0:
+                    pygame.draw.circle(self.win, BLUE, (col * SQUARE_SIZE + SQUARE_SIZE//2, row * SQUARE_SIZE + SQUARE_SIZE//2), 40, width = 5)
+                if new_board.board[row][col] == 0 and old_board.board[row][col] != 0:
+                    pygame.draw.circle(self.win, BLUE, (col * SQUARE_SIZE + SQUARE_SIZE//2, row * SQUARE_SIZE + SQUARE_SIZE//2), 40, width = 5)
+        pygame.display.update()
 
-    def ai_move(self, board):
-        self.board = board
+    def ai_move(self, new_board):
+        self.highlight_move(new_board)
+        pygame.time.delay(1000)
+        self.board = new_board
         self.change_turn()
