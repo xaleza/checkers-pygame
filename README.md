@@ -1,6 +1,6 @@
 # checkers-pygame
 
-Simple checkers pygame.
+Simple checkers pygame based on https://github.com/techwithtim/Python-Checkers
 
 ## Features:
 - Play against the computer in 3 different difficulties
