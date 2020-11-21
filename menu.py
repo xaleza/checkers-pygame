@@ -15,10 +15,12 @@ class Menu:
         self.mytheme.widget_font = pygame_menu.font.FONT_OPEN_SANS_BOLD
         self.menu = pygame_menu.Menu(WIDTH,HEIGHT, 'Checkers', theme=self.mytheme)
         self.winner_screen = pygame_menu.Menu(WIDTH,HEIGHT, 'Checkers', theme=self.mytheme)
+        self.menu_ai = pygame_menu.Menu(WIDTH,HEIGHT, 'Checkers', theme=self.mytheme)
+        self.ai_difficulty = 1
         self.init()
     
     def init(self):
-        self.menu.add_button('Play against the Computer', self.start_the_game_ai)
+        self.menu.add_button('Play against the Computer', self.open_menu_ai)
         self.menu.add_button('Play Local Multiplayer', self.start_the_game)
         self.menu.add_button('Quit', pygame_menu.events.EXIT)
         self.menu.mainloop(self.win)
@@ -43,6 +45,16 @@ class Menu:
 
             game.update()
     
+    def open_menu_ai(self):
+        self.menu_ai.add_selector('Difficulty: ', [('Beginner', 1),('Easy', 2),('Hard', 5)], onchange=self.set_ai_difficulty)
+        self.menu_ai.add_button('Start', self.start_the_game_ai)
+        self.menu_ai.add_button('Quit', pygame_menu.events.EXIT)
+        self.menu_ai.mainloop(self.win)
+
+    
+    def set_ai_difficulty(self, selected, value):
+        self.ai_difficulty = value
+
     def start_the_game_ai(self):
         run = True
         clock = pygame.time.Clock()
@@ -51,7 +63,7 @@ class Menu:
             clock.tick(self.fps)
 
             if game.turn == BLACK:
-                value, new_board = minimax(game.get_board(), 3, BLACK, game)
+                value, new_board = minimax(game.get_board(), self.ai_difficulty, BLACK, game)
                 game.ai_move(new_board)
                 time.sleep(1)
 
