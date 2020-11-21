@@ -1,6 +1,6 @@
 import pygame
 import pygame_menu
-from checkers.constants import WIDTH, HEIGHT
+from checkers.constants import WIDTH, HEIGHT, WHITE, BLACK
 from checkers.game import Game
 
 class Menu:
@@ -12,6 +12,7 @@ class Menu:
         self.mytheme.background_color = self.myimage
         self.mytheme.widget_font = pygame_menu.font.FONT_OPEN_SANS_BOLD
         self.menu = pygame_menu.Menu(WIDTH,HEIGHT, 'Checkers', theme=self.mytheme)
+        self.winner_screen = pygame_menu.Menu(WIDTH,HEIGHT, 'Checkers', theme=self.mytheme)
         self.init()
     
     def init(self):
@@ -27,7 +28,7 @@ class Menu:
             clock.tick(self.fps)
 
             if game.winner() != None:
-                print(game.winner())
+                self.print_winner(game.winner())
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -38,3 +39,15 @@ class Menu:
                     game.select(pos)
 
             game.update()
+    
+    def print_winner(self, winner_color):
+        if winner_color == WHITE:
+            winner = 'White'
+        else:
+            winner = 'Black'
+
+        winner_text = winner + ' wins!'
+        self.winner_screen.add_label(winner_text, max_char=-1, font_size=60)
+        self.winner_screen.add_button('Quit', pygame_menu.events.EXIT)
+        self.winner_screen.mainloop(self.win)
+

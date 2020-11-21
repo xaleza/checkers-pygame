@@ -1,6 +1,6 @@
 import pygame
 import pygame_menu
-from checkers.constants import WIDTH, HEIGHT, SQUARE_SIZE, WHITE
+from checkers.constants import WIDTH, HEIGHT
 from checkers.game import Game
 from menu import Menu
 
