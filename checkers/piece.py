@@ -26,8 +26,10 @@ class Piece:
         self.col = col
         self.calc_pos()
 
-    def draw(self, win):
+    def draw(self, win, turn):
         radius = SQUARE_SIZE // 2 - self.PADDING
+        if self.color == turn:
+            pygame.draw.circle(win, WHITE, (self.x, self.y), radius + self.OUTLINE + 5) 
         pygame.draw.circle(win, GREY, (self.x, self.y), radius + self.OUTLINE) 
         pygame.draw.circle(win, self.color, (self.x, self.y), radius)
         if self.king:

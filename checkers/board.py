@@ -53,20 +53,20 @@ class Board:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
-        if row == ROWS - 1 or row == 0:
+        if (row == ROWS - 1 or row == 0) and not piece.king:
             piece.make_king()
             if piece.color == WHITE:
                 self.white_kings += 1
             else:
                 self.black_kings += 1 
 
-    def draw(self, win):
+    def draw(self, win, turn):
         self.draw_squares(win)
         for row in range(ROWS):
             for col in range(COLS):
                 piece = self.board[row][col]
                 if piece != 0:
-                    piece.draw(win)
+                    piece.draw(win, turn)
 
     def get_valid_moves(self, piece):
         moves = {}
@@ -101,7 +101,7 @@ class Board:
                     moves[(r, left)] = last
                 if last:
                     if step == -1:
-                        row = max(r-3,0)
+                        row = max(r-3,-1)
                     else:
                         row = min(r+3, ROWS)
                     moves.update(self._transverse_left(r+step, row, step, color, left-1, skipped = last))
@@ -131,7 +131,7 @@ class Board:
                     moves[(r, right)] = last
                 if last:
                     if step == -1:
-                        row = max(r-3,0)
+                        row = max(r-3,-1)
                     else:
                         row = min(r+3, ROWS)
                     moves.update(self._transverse_left(r+step, row, step, color, right-1, skipped = last))
