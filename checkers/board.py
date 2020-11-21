@@ -49,6 +49,17 @@ class Board:
         else:
             return None
 
+    def evaluate(self):
+        return self.black_left - self.white_left + (self.black_left*0.5 - self.white_kings*0.5)
+
+    def get_all_pieces(self, color):
+        pieces = []
+        for row in self.board:
+            for piece in self.row:
+                if piece != 0 and piece.color == color:
+                    pieces.apped(piece)
+        return pieces
+
     def move(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
