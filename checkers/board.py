@@ -55,9 +55,9 @@ class Board:
     def get_all_pieces(self, color):
         pieces = []
         for row in self.board:
-            for piece in self.row:
+            for piece in row:
                 if piece != 0 and piece.color == color:
-                    pieces.apped(piece)
+                    pieces.append(piece)
         return pieces
 
     def move(self, piece, row, col):

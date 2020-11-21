@@ -2,6 +2,8 @@ import pygame
 import pygame_menu
 from checkers.constants import WIDTH, HEIGHT, WHITE, BLACK
 from checkers.game import Game
+from minimax.algorithm import minimax
+import time
 
 class Menu:
     def __init__(self, win, fps):
@@ -16,7 +18,8 @@ class Menu:
         self.init()
     
     def init(self):
-        self.menu.add_button('Play', self.start_the_game)
+        self.menu.add_button('Play against the Computer', self.start_the_game_ai)
+        self.menu.add_button('Play Local Multiplayer', self.start_the_game)
         self.menu.add_button('Quit', pygame_menu.events.EXIT)
         self.menu.mainloop(self.win)
 
@@ -26,6 +29,31 @@ class Menu:
         game = Game(self.win)
         while run:
             clock.tick(self.fps)
+
+            if game.winner() != None:
+                self.print_winner(game.winner())
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    game.select(pos)
+
+            game.update()
+    
+    def start_the_game_ai(self):
+        run = True
+        clock = pygame.time.Clock()
+        game = Game(self.win)
+        while run:
+            clock.tick(self.fps)
+
+            if game.turn == BLACK:
+                value, new_board = minimax(game.get_board(), 3, BLACK, game)
+                game.ai_move(new_board)
+                time.sleep(1)
 
             if game.winner() != None:
                 self.print_winner(game.winner())
